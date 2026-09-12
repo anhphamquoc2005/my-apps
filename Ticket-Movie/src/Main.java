@@ -123,18 +123,44 @@ public class Main {
                                 inCinemaMap();
                                 System.out.print("\n\nNhập mã ghế để chọn vị trí ngồi(A1, A2): ");
                                 characterChair = scanner.nextLine().toUpperCase();
-                                while (characterChair.length() > 3 || !characterChair.matches("^[A-Ka-k]\\d+$")) {
+                                while (true) {
 
-                                    if (characterChair.length() > 3) {
+                                    if (characterChair.length() > 3 || !characterChair.matches("^[A-Ka-k]\\d+$")) {
                                         System.out.println("Mã ghê không tồn tại!");
+                                        System.out.print("\nNhập mã ghế để chọn vị trí ngồi(A1, A2): ");
+                                        characterChair = scanner.nextLine().toUpperCase();
+                                        continue;
                                     }
 
-                                    if (!characterChair.matches("^[A-Ka-k]\\d+$")) {
-                                        System.out.println("Mã ghê không tồn tại!");
+                                    char letter = Character.toUpperCase(characterChair.charAt(0));
+                                    int number = Integer.parseInt(characterChair.substring(1));
+                                    boolean isValid = false;
+
+                                    if ((letter >= 'A' && letter <= 'C')) {
+                                        if (number >= 1 && number <= 12) {
+                                            priceBill = 70000;
+                                            isValid = true;
+                                        }
+                                    } else if (letter >= 'D' && letter <= 'J') {
+                                        if (number >= 1 && number <= 14) {
+                                            priceBill = 80000;
+                                            isValid = true;
+                                        }
+                                    } else if (letter == 'K') {
+                                        if (number >= 1 && number <= 12) {
+                                            priceBill = 150000;
+                                            isValid = true;
+                                        }
                                     }
 
-                                    System.out.print("\nNhập mã ghế để chọn vị trí ngồi(A1, A2): ");
-                                    characterChair = scanner.nextLine().toUpperCase();
+                                    if (!isValid) {
+                                        System.out.println("\nMã ghế không tồn tại!");
+                                        System.out.print("\nNhập mã ghế để chọn vị trí ngồi(A1, A2): ");
+                                        characterChair = scanner.nextLine().toUpperCase();
+                                    } else {
+                                        System.out.println("\nChọn ghế thành công!");
+                                        break;
+                                    }
                                 }
 
                             }
