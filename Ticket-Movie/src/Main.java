@@ -1,21 +1,25 @@
+import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
-
+        Random random = new Random();
+        String fullName = "";
         String username = "";
         String password = "";
         String loginUser;
         String loginPass;
-        String phoneNumber;
-        String characterChair;
-        double priceBill;
-        double sumBill;
-        boolean isStudent;
-        boolean isSenior;
-        int amount;
-        int age;
+        String phoneNumber = "";
+        String[] chairs;
+        String characterChair = "";
+        double priceBill = 0;
+        double sumBill = 0;
+        boolean isStudent = false;
+        boolean isSenior = false;
+        int amountChair;
+        int age = 0;
         int select = 0;
 
         do {
@@ -49,6 +53,42 @@ public class Main {
                         username = scanner.nextLine();
                     }
 
+                    System.out.print("\nHọ và tên: ");
+                    fullName = scanner.nextLine().trim();
+                    while (fullName.trim().length() < 10) {
+                        System.out.println("Họ và tên không được ít hơn 10 ký tự!\n");
+
+                        System.out.print("Họ và tên: ");
+                        fullName = scanner.nextLine().trim();
+                    }
+
+                    while (true) {
+                        System.out.print("\nTuổi: ");
+
+                        if (scanner.hasNextInt()) {
+                            age = scanner.nextInt();
+
+                            if (age > 0) {
+                                break;
+                            } else {
+                                System.out.println("Tuổi không đúng định dạng!");
+                            }
+                        } else {
+                            System.out.println("Tuổi không đúng định dạng!");
+                            scanner.nextLine();
+                        }
+                    }
+
+                    scanner.nextLine();
+
+                    System.out.print("\nSố điện thoại: ");
+                    phoneNumber = scanner.nextLine();
+                    while (!phoneNumber.matches("^0[987532]\\d{8}$")) {
+                        System.out.println("Số điện thoại không đúng định dạng!\n");
+                        System.out.print("Số điện thoại:");
+                        phoneNumber = scanner.nextLine();
+                    }
+
                     System.out.print("\nTạo mật khẩu: ");
                     password = scanner.nextLine();
                     while (password.length() < 8 || password.length() > 16 || password.contains(" ") || password.contains("_")) {
@@ -78,7 +118,7 @@ public class Main {
                 }
 
                 case 2 -> {
-                    System.out.print("Tên đăng nhập: ");
+                    System.out.print("\nTên đăng nhập: ");
                     loginUser = scanner.nextLine();
                     System.out.print("Nhập mật khẩu: ");
                     loginPass = scanner.nextLine();
@@ -121,51 +161,131 @@ public class Main {
                                 }
 
                                 inCinemaMap();
-                                System.out.print("\n\nNhập mã ghế để chọn vị trí ngồi(A1, A2): ");
-                                characterChair = scanner.nextLine().toUpperCase();
+
                                 while (true) {
+                                    System.out.print("\n\nNhập số lượng ghế bạn muốn chọn (lưu ý: để chọn ghế couple bạn cần số lượng 2 ghế): ");
 
-                                    if (characterChair.length() > 3 || !characterChair.matches("^[A-Ka-k]\\d+$")) {
-                                        System.out.println("Mã ghê không tồn tại!");
-                                        System.out.print("\nNhập mã ghế để chọn vị trí ngồi(A1, A2): ");
-                                        characterChair = scanner.nextLine().toUpperCase();
-                                        continue;
-                                    }
-
-                                    char letter = Character.toUpperCase(characterChair.charAt(0));
-                                    int number = Integer.parseInt(characterChair.substring(1));
-                                    boolean isValid = false;
-
-                                    if ((letter >= 'A' && letter <= 'C')) {
-                                        if (number >= 1 && number <= 12) {
-                                            priceBill = 70000;
-                                            isValid = true;
+                                    if (scanner.hasNextInt()) {
+                                        amountChair = scanner.nextInt();
+                                        if (amountChair > 0) {
+                                            break;
+                                        } else {
+                                            System.out.println("Không đúng định dạng!");
                                         }
-                                    } else if (letter >= 'D' && letter <= 'J') {
-                                        if (number >= 1 && number <= 14) {
-                                            priceBill = 80000;
-                                            isValid = true;
-                                        }
-                                    } else if (letter == 'K') {
-                                        if (number >= 1 && number <= 12) {
-                                            priceBill = 150000;
-                                            isValid = true;
-                                        }
-                                    }
-
-                                    if (!isValid) {
-                                        System.out.println("\nMã ghế không tồn tại!");
-                                        System.out.print("\nNhập mã ghế để chọn vị trí ngồi(A1, A2): ");
-                                        characterChair = scanner.nextLine().toUpperCase();
                                     } else {
-                                        System.out.println("\nChọn ghế thành công!");
-                                        break;
+                                        System.out.println("Không đúng định dạng!");
+                                        scanner.nextLine();
+                                    }
+                                }
+                                
+                                chairs = new String[amountChair];
+
+                                scanner.nextLine();
+
+                                for (int i = 0; i < chairs.length; i++) {
+                                    System.out.print("\n\nNhập mã ghế để chọn vị trí ngồi (A1, A2, đối với ghế đôi chỉ cần nhập ghế số lẻ ví dụ K1): ");
+                                    characterChair = scanner.nextLine().toUpperCase();
+                                    while (true) {
+
+                                        char letter = Character.toUpperCase(characterChair.charAt(0));
+                                        int number = Integer.parseInt(characterChair.substring(1));
+                                        boolean isValid = false;
+
+                                        if (characterChair.length() > 3 || !characterChair.matches("^[A-Ka-k]\\d+$")) {
+                                            System.out.println("Mã ghê không tồn tại!");
+                                            System.out.print("\nNhập mã ghế để chọn vị trí ngồi(A1, A2): ");
+                                            characterChair = scanner.nextLine().toUpperCase();
+                                            continue;
+                                        }
+
+                                        if ((letter >= 'A' && letter <= 'C')) {
+                                            if (number >= 1 && number <= 12) {
+                                                chairs[i] = characterChair;
+                                                priceBill = 70000;
+                                                sumBill = priceBill * amountChair;
+                                                isValid = true;
+                                            }
+                                        } else if (letter >= 'D' && letter <= 'J') {
+                                            if (number >= 1 && number <= 14) {
+                                                chairs[i] = characterChair;
+                                                priceBill = 80000;
+                                                sumBill = priceBill * amountChair;
+                                                isValid = true;
+                                            }
+                                        } else if (letter == 'K') {
+                                            if (number >= 1 && number <= 9 && number % 2 != 0) {
+                                                if (i < chairs.length -1) {
+                                                    chairs[i] = "K" + number;
+                                                    chairs[i + 1] = "K" + (number + 1);
+                                                    priceBill = 75000;
+                                                    sumBill += (priceBill * 2);
+                                                    i++;
+                                                    isValid = true;
+                                                } else {
+                                                    System.out.println("Số lượng ghế bạn chọn không phù hợp để chọn hàng ghế K!");
+                                                }
+                                            } else {
+                                                System.out.println("Bạn chỉ cần nhập 1 ghế số lẻ. Hệ thống sẽ tự động xác nhận ghế đôi cho bạn!");
+                                            }
+                                        }
+
+                                        if (!isValid) {
+                                            System.out.println("\nMã ghế không tồn tại!");
+                                            System.out.print("\nNhập mã ghế để chọn vị trí ngồi(A1, A2): ");
+                                            characterChair = scanner.nextLine().toUpperCase();
+                                        } else {
+                                            System.out.println("\nChọn ghế thành công!\n");
+                                            break;
+                                        }
                                     }
                                 }
 
+                                System.out.print("Đang in hóa đơn");
+                                for (int i = 3; i > 0; i--) {
+                                    System.out.print(".");
+                                    Thread.sleep(1000);
+                                }
+
+                                sumBill = priceBill * amountChair;
+
+                                if (age < 18) {
+                                    isStudent = true;
+                                    System.out.println("\n\nBạn là sinh viên! Bạn sẽ được giảm 10% vào tổng hóa đơn!");
+                                    Thread.sleep(1000);
+                                } else if (age >= 60) {
+                                    isSenior = true;
+                                    System.out.println("\n\nBạn là người cao tuổi! Bạn sẽ được giảm 20% vào tổng hóa đơn!");
+                                    Thread.sleep(1000);
+                                }
+
+                                if (isStudent) {
+                                    if (isSenior) {
+                                        sumBill *= 0.7;
+                                    }
+                                    else {
+                                        sumBill *= 0.9;
+                                    }
+                                } else {
+                                    if (isSenior) {
+                                        sumBill *= 0.8;
+                                    }
+                                    else {
+                                        sumBill *= 1;
+                                    }
+                                }
+
+                                int idBill = random.nextInt(1000, 4999);
+                                System.out.printf("""
+                                      \n\n========= %d ========
+                                        Tên: %s
+                                        SĐT: %s
+                                        Rạp: 7
+                                        Ghế: %s
+                                        Tổng hóa đơn: %,.0f VNĐ
+                                      =======================
+                                        \n""", idBill, fullName, phoneNumber, Arrays.toString(chairs), sumBill);
                             }
-                            case 4 -> {}
-                            case 5 -> {}
+                            case 4 -> System.out.println("Xin cảm ơn quý khách!");
                         }
                     } while (select != 4);
 
