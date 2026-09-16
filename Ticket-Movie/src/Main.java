@@ -12,12 +12,15 @@ public class Main {
         String loginUser;
         String loginPass;
         String phoneNumber = "";
+        String[] movies = {"Nghỉ hè sợ nghỉ hưu", "Hộ Linh Tráng Sĩ", "Harry Potter và Hòn đá phù thủy"};
+        String target;
         String[] chairs;
         String characterChair = "";
         double priceBill = 0;
         double sumBill = 0;
         boolean isStudent = false;
         boolean isSenior = false;
+        boolean isFound = false;
         int amountChair;
         int age = 0;
         int select = 0;
@@ -142,6 +145,7 @@ public class Main {
 
                     do {
                         inSystemUI();
+
                         while (!scanner.hasNextInt()) {
                             System.out.println("Bạn chỉ có thể nhập số để lựa chọn.");
                             System.out.print("Chọn: ");
@@ -276,7 +280,7 @@ public class Main {
 
                                 int idBill = random.nextInt(1000, 4999);
                                 System.out.printf("""
-                                      \n\n========= %d ========
+                                      \n\n============ %d ===========
                                         Tên: %s
                                         SĐT: %s
                                         Rạp: 7
@@ -285,9 +289,33 @@ public class Main {
                                       =======================
                                         \n""", idBill, fullName, phoneNumber, Arrays.toString(chairs), sumBill);
                             }
-                            case 4 -> System.out.println("Xin cảm ơn quý khách!");
+
+                            case 4 -> {
+                                while (!isFound) {
+                                    System.out.print("\nNhập tên phim cần tìm kiếm (nhập 'thoát' nêu muốn trở lại): ");
+                                    target = scanner.nextLine().trim();
+
+                                    if (target.isEmpty()) {
+                                        System.out.println("Không tìm thấy!");
+                                    }
+
+                                    if (target.equalsIgnoreCase("Thoát")) {
+                                        isFound = true;
+                                    }
+
+                                    for (int i = 0; i < movies.length; i++) {
+                                        if (movies[i].equalsIgnoreCase(target)) {
+                                            System.out.println("\n" + movies[i]);
+                                            isFound = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            case 5 -> System.out.println("Cảm ơn quý khách!");
                         }
-                    } while (select != 4);
+                    } while (select != 5);
 
                 }
                 case 3 -> {
@@ -311,7 +339,8 @@ public class Main {
         System.out.println("[1] Nghỉ hè sợ nghỉ hưu");
         System.out.println("[2] Hộ Linh Tráng Sĩ");
         System.out.println("[3] Harry Potter và Hòn Đá Phù Thủy");
-        System.out.println("[4] Thoát");
+        System.out.println("[4] Tìm kiếm");
+        System.out.println("[5] Thoát");
         System.out.print("Chọn: ");
     }
 
