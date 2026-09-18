@@ -3,64 +3,60 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Random r = new Random();
-        Scanner sc = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
 
-        while (true) {
-            System.out.println("\n=== Rock-paper-scissors ===");
-            System.out.println("Nhap keo/bua/bao: ");
+        String[] choice = {"kéo", "búa", "bao"};
+        String playerUser;
+        String playerComputer;
+        boolean isRunning = true;
 
-            int random = r.nextInt(3);
-            // System.out.println("Result = " + random); test random số
+        System.out.println("===========");
+        System.out.println(" Oản tù tì");
+        System.out.println("===========");
 
-            String computer = null;
+        while (isRunning) {
 
-            if (random == 0)
-                computer = "keo";
-            if (random == 1)
-                computer = "bua";
-            if (random == 2)
-                computer = "bao";
+            System.out.print("\nBạn nhập (kéo, búa, bao): ");
+            playerUser = scanner.nextLine();
 
-            String userInput = sc.nextLine();
+            playerComputer = choice[random.nextInt(3)];
 
-            if (userInput.equalsIgnoreCase("thoat")) {
-                System.out.println("Tam biet!");
-                break;
+            if (!playerUser.equalsIgnoreCase(choice[0]) && !playerUser.equalsIgnoreCase(choice[1]) && !playerUser.equalsIgnoreCase(choice[2]) && !playerUser.equalsIgnoreCase("thoát")) {
+                System.out.println("\nLựa chọn không hợp lệ!\n");
+            } else if (playerUser.equalsIgnoreCase("thoát")) {
+                System.out.println("\nĐã thoát trò chơi!");
+                isRunning = false;
+            } else {
+                System.out.printf("\nBạn ra %s \n", playerUser);
+                System.out.printf("\nMáy tính ra %s\n\n", playerComputer);
             }
 
-            if (!userInput.equals("keo") && !userInput.equals("bua") && !userInput.equals("bao")) {
-                System.out.println("Vui long nhap keo/bua/bao de tiep tuc!");
-                continue;
-            }
-
-            System.out.println("Ban ra: " + userInput);
-            System.out.println("May ra: " + computer);
-
-            if (userInput.equals(computer))
-                System.out.println("Hoa");
-
-            if (userInput.equals("keo")) {
-                if (computer == "bua")
+            if (playerComputer.equalsIgnoreCase(choice[0])) {
+                if (playerUser.equalsIgnoreCase(choice[1])) {
+                    System.out.println("Thắng!");
+                } else if (playerUser.equalsIgnoreCase(choice[2])) {
                     System.out.println("Thua");
-                if (computer == "bao")
-                    System.out.println("Thang");
-            }
-
-            else if (userInput.equals("bua")) {
-                if (computer == "bao")
-                    System.out.println("Thua");
-                if (computer == "keo")
-                    System.out.println("Thang");
-            }
-
-            else if (userInput.equals("bao")) {
-                if (computer == "keo")
-                    System.out.println("Thua");
-                if (computer == "bua")
-                    System.out.println("Thang");
+                } else if (playerUser.equalsIgnoreCase(choice[0])) {
+                    System.out.println("Hòa");
+                }
+            } else if (playerComputer.equalsIgnoreCase(choice[2])) {
+                if (playerUser.equalsIgnoreCase(choice[1])) {
+                    System.out.println("Thua!");
+                } else if (playerUser.equalsIgnoreCase(choice[0])) {
+                    System.out.println("Thắng");
+                } else if (playerUser.equalsIgnoreCase(choice[2])) {
+                    System.out.println("Hòa");
+                }
+            } else if (playerComputer.equalsIgnoreCase(choice[1])) {
+                if (playerUser.equalsIgnoreCase(choice[0])) {
+                    System.out.println("Thua!");
+                } else if (playerUser.equalsIgnoreCase(choice[2])) {
+                    System.out.println("Thắng");
+                } else if (playerUser.equalsIgnoreCase(choice[1])) {
+                    System.out.println("Hòa");
+                }
             }
         }
-        sc.close();
     }
 }
