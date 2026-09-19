@@ -3,6 +3,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
+
+    static Movie[] movies = new Movie[3];
+
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
@@ -12,7 +15,6 @@ public class Main {
         String loginUser;
         String loginPass;
         String phoneNumber = "";
-        String[] movies = {"Nghỉ hè sợ nghỉ hưu", "Hộ Linh Tráng Sĩ", "Harry Potter và Hòn đá phù thủy"};
         String target;
         String[] chairs;
         String characterChair = "";
@@ -20,12 +22,19 @@ public class Main {
         double sumBill = 0;
         boolean isStudent = false;
         boolean isSenior = false;
-        boolean isFound = false;
         int amountChair;
         int age = 0;
         int select = 0;
 
+        movies[0] = new Movie("[1] Nghỉ hè sợ nghỉ hưu", 70000, 117);
+        movies[1] = new Movie("[2] Hộ Linh Tráng Sĩ", 70000, 135);
+        movies[2] = new Movie("[3] Harry Potter và Hòn Đá Phù Thủy", 70000);
+
         do {
+            inCinemaMap();
+
+            System.out.println();
+
             inMenu();
             System.out.print("Chọn: ");
 
@@ -112,12 +121,12 @@ public class Main {
 
                     for (int i = 3; i > 0; i--) {
                         System.out.print(".");
-                        Thread.sleep(1000);
+                        Thread.sleep(400);
                     }
 
                     System.out.println("\n\nTạo tài khoản thành công!\n");
 
-                    Thread.sleep(1000);
+                    Thread.sleep(400);
                 }
 
                 case 2 -> {
@@ -137,11 +146,11 @@ public class Main {
 
                     for (int i = 3; i > 0; i--) {
                         System.out.print(".");
-                        Thread.sleep(1000);
+                        Thread.sleep(400);
                     }
 
                     System.out.println("\n\nĐăng nhập thành công!\n");
-                    Thread.sleep(1000);
+                    Thread.sleep(400);
 
                     do {
                         inSystemUI();
@@ -181,7 +190,7 @@ public class Main {
                                         scanner.nextLine();
                                     }
                                 }
-                                
+
                                 chairs = new String[amountChair];
 
                                 scanner.nextLine();
@@ -291,23 +300,24 @@ public class Main {
                             }
 
                             case 4 -> {
+                                boolean isFound = false;
+
                                 while (!isFound) {
                                     System.out.print("\nNhập tên phim cần tìm kiếm (nhập 'thoát' nêu muốn trở lại): ");
                                     target = scanner.nextLine().trim();
-
-                                    if (target.isEmpty()) {
-                                        System.out.println("Không tìm thấy!");
-                                    }
 
                                     if (target.equalsIgnoreCase("Thoát")) {
                                         isFound = true;
                                     }
 
-                                    for (int i = 0; i < movies.length; i++) {
-                                        if (movies[i].equalsIgnoreCase(target)) {
-                                            System.out.println("\n" + movies[i]);
-                                            isFound = true;
-                                            break;
+                                    if (target.isEmpty()) {
+                                        System.out.println("Không tìm thấy!");
+                                        continue;
+                                    }
+
+                                    for (Movie m : movies) {
+                                         if(m != null && m.getTitle().toLowerCase().contains(target.toLowerCase())) {
+                                            m.printInfo();
                                         }
                                     }
                                 }
@@ -336,9 +346,9 @@ public class Main {
 
     public static void inSystemUI() {
         System.out.println("\n========== Lịch chiếu phim ==========");
-        System.out.println("[1] Nghỉ hè sợ nghỉ hưu");
-        System.out.println("[2] Hộ Linh Tráng Sĩ");
-        System.out.println("[3] Harry Potter và Hòn Đá Phù Thủy");
+        for (Movie m : movies) {
+            m.printInfo();
+        }
         System.out.println("[4] Tìm kiếm");
         System.out.println("[5] Thoát");
         System.out.print("Chọn: ");
@@ -355,7 +365,7 @@ public class Main {
                 System.out.print("[" + i + j + "] ");
             }
         }
-        
+
         for (char i = 'D'; i < 'K'; i++) {
             System.out.println();
             for (int j = 1; j < 15; j++) {
