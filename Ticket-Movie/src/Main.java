@@ -1,3 +1,6 @@
+import Account.Admin;
+import Account.User;
+
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -9,12 +12,9 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
-        String fullName = "";
-        String username = "";
-        String password = "";
+        Admin admin = new Admin();
         String loginUser;
         String loginPass;
-        String phoneNumber = "";
         String target;
         String[] chairs;
         String characterChair = "";
@@ -31,9 +31,6 @@ public class Main {
         movies[2] = new Movie("[3] Harry Potter và Hòn Đá Phù Thủy", 70000);
 
         do {
-            inCinemaMap();
-
-            System.out.println();
 
             inMenu();
             System.out.print("Chọn: ");
@@ -47,40 +44,42 @@ public class Main {
             select = scanner.nextInt();
             scanner.nextLine();
 
+            User user = new User();
+
             switch (select) {
                 case 1 -> {
                     System.out.print("\nTạo tên đăng nhập: ");
-                    username = scanner.nextLine();
-                    while (username.length() < 6 || username.length() > 12 || username.contains(" ") || username.contains("_")) {
+                    user.username = scanner.nextLine();
+                    while (user.username.length() < 6 || user.username.length() > 12 || user.username.contains(" ") || user.username.contains("_")) {
 
-                        if (username.length() < 6 || username.length() > 12) {
+                        if (user.username.length() < 6 || user.username.length() > 12) {
                             System.out.println("Tên đăng nhập phải có từ 6 - 12 ký tự!");
                         }
 
-                        if (username.contains(" ") || username.contains("_")) {
+                        if (user.username.contains(" ") || user.username.contains("_")) {
                             System.out.println("Tên đăng nhập không được chứa khoảng trống hay dấu gạch dưới!");
                         }
 
                         System.out.print("\nTạo tên đăng nhập: ");
-                        username = scanner.nextLine();
+                        user.username = scanner.nextLine();
                     }
 
                     System.out.print("\nHọ và tên: ");
-                    fullName = scanner.nextLine().trim();
-                    while (fullName.trim().length() < 10) {
+                    user.fullName = scanner.nextLine().trim();
+                    while (user.fullName.trim().length() < 10) {
                         System.out.println("Họ và tên không được ít hơn 10 ký tự!\n");
 
                         System.out.print("Họ và tên: ");
-                        fullName = scanner.nextLine().trim();
+                        user.fullName = scanner.nextLine().trim();
                     }
 
                     while (true) {
                         System.out.print("\nTuổi: ");
 
                         if (scanner.hasNextInt()) {
-                            age = scanner.nextInt();
+                            user.age = scanner.nextInt();
 
-                            if (age > 0) {
+                            if (user.age > 0) {
                                 break;
                             } else {
                                 System.out.println("Tuổi không đúng định dạng!");
@@ -94,27 +93,27 @@ public class Main {
                     scanner.nextLine();
 
                     System.out.print("\nSố điện thoại: ");
-                    phoneNumber = scanner.nextLine();
-                    while (!phoneNumber.matches("^0[987532]\\d{8}$")) {
+                    user.phoneNumber = scanner.nextLine();
+                    while (!user.phoneNumber.matches("^0[987532]\\d{8}$")) {
                         System.out.println("Số điện thoại không đúng định dạng!\n");
                         System.out.print("Số điện thoại:");
-                        phoneNumber = scanner.nextLine();
+                        user.phoneNumber = scanner.nextLine();
                     }
 
                     System.out.print("\nTạo mật khẩu: ");
-                    password = scanner.nextLine();
-                    while (password.length() < 8 || password.length() > 16 || password.contains(" ") || password.contains("_")) {
+                    user.password = scanner.nextLine();
+                    while (user.password.length() < 8 || user.password.length() > 16 || user.password.contains(" ") || user.password.contains("_")) {
 
-                        if (password.length() < 8 || password.length() > 16) {
+                        if (user.password.length() < 8 || user.password.length() > 16) {
                             System.out.println("Mật khẩu phải có từ 8 - 16 ký tự!");
                         }
 
-                        if (password.contains(" ") || password.contains("_")) {
+                        if (user.password.contains(" ") || user.password.contains("_")) {
                             System.out.println("Mật khẩu không được chứa khoảng trống hay dấu gạch dưới!");
                         }
 
                         System.out.print("\nTạo mật khẩu: ");
-                        password = scanner.nextLine();
+                        user.password = scanner.nextLine();
                     }
 
                     System.out.print("\nĐang tải");
@@ -134,7 +133,7 @@ public class Main {
                     loginUser = scanner.nextLine();
                     System.out.print("Nhập mật khẩu: ");
                     loginPass = scanner.nextLine();
-                    while (!loginUser.equalsIgnoreCase(username) || loginUser.isEmpty() && !loginPass.equalsIgnoreCase(password) || loginPass.isEmpty()) {
+                    while (!loginUser.equalsIgnoreCase(user.username) || loginUser.isEmpty() && !loginPass.equalsIgnoreCase(user.password) || loginPass.isEmpty()) {
                         System.out.println("Tên đăng nhập hoặc mật khẩu không khớp\n");
                         System.out.print("Tên đăng nhập: ");
                         loginUser = scanner.nextLine();
@@ -261,11 +260,11 @@ public class Main {
 
                                 sumBill = priceBill * amountChair;
 
-                                if (age < 18) {
+                                if (user.age < 18) {
                                     isStudent = true;
                                     System.out.println("\n\nBạn là sinh viên! Bạn sẽ được giảm 10% vào tổng hóa đơn!");
                                     Thread.sleep(1000);
-                                } else if (age >= 60) {
+                                } else if (user.age >= 60) {
                                     isSenior = true;
                                     System.out.println("\n\nBạn là người cao tuổi! Bạn sẽ được giảm 20% vào tổng hóa đơn!");
                                     Thread.sleep(1000);
@@ -296,7 +295,7 @@ public class Main {
                                         Ghế: %s
                                         Tổng hóa đơn: %,.0f VNĐ
                                       =======================
-                                        \n""", idBill, fullName, phoneNumber, Arrays.toString(chairs), sumBill);
+                                        \n""", idBill, user.fullName, user.phoneNumber, Arrays.toString(chairs), sumBill);
                             }
 
                             case 4 -> {
@@ -323,12 +322,33 @@ public class Main {
                                 }
                             }
 
-                            case 5 -> System.out.println("Cảm ơn quý khách!");
+                            case 5 -> user.printInfo();
+
+                            case 6 -> System.out.println("Cảm ơn quý khách!");
                         }
-                    } while (select != 5);
+                    } while (select != 6);
 
                 }
+
                 case 3 -> {
+                    System.out.print("Tên đăng nhập (Admin): ");
+                    admin.adminUser = scanner.nextLine();
+                    System.out.print("Mật khẩu (Admin): ");
+                    admin.adminPassword = scanner.nextLine();
+
+                    while (!admin.adminUser.contains("admin") || !admin.adminPassword.contains("admin")) {
+                        System.out.println("\nTên đăng nhập hoặc mật khẩu không đúng!\n");
+
+                        System.out.print("Tên đăng nhập (Admin): ");
+                        admin.adminUser = scanner.nextLine();
+                        System.out.print("Mật khẩu (Admin): ");
+                        admin.adminPassword = scanner.nextLine();
+                    }
+
+                    user.printNumOfUser();
+                }
+
+                case 4 -> {
                     System.out.println("\nCảm ơn quý khách đã sử dụng dịch vụ!");
                 }
             }
@@ -341,7 +361,8 @@ public class Main {
         System.out.println("\n=== Đặt vé xem Beta Cinema ===");
         System.out.println("1. Đăng ký tài khoản");
         System.out.println("2. Đăng nhập");
-        System.out.println("3. Thoát");
+        System.out.println("3. Đăng nhập với quyền Admin");
+        System.out.println("4. Thoát");
     }
 
     public static void inSystemUI() {
@@ -350,7 +371,8 @@ public class Main {
             m.printInfo();
         }
         System.out.println("[4] Tìm kiếm");
-        System.out.println("[5] Thoát");
+        System.out.println("[5] Xem thông tin tài khoản");
+        System.out.println("[6] Thoát");
         System.out.print("Chọn: ");
     }
 
