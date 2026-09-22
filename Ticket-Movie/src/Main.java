@@ -13,6 +13,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
         Admin admin = new Admin();
+        User user = new User("", "", "", 0, "");
         String loginUser;
         String loginPass;
         String target;
@@ -22,6 +23,7 @@ public class Main {
         double sumBill = 0;
         boolean isStudent = false;
         boolean isSenior = false;
+        int numOfUser = 0;
         int amountChair;
         int age = 0;
         int select = 0;
@@ -43,8 +45,6 @@ public class Main {
 
             select = scanner.nextInt();
             scanner.nextLine();
-
-            User user = new User();
 
             switch (select) {
                 case 1 -> {
@@ -124,6 +124,8 @@ public class Main {
                     }
 
                     System.out.println("\n\nTạo tài khoản thành công!\n");
+
+                    numOfUser++;
 
                     Thread.sleep(400);
                 }
@@ -331,7 +333,7 @@ public class Main {
                 }
 
                 case 3 -> {
-                    System.out.print("Tên đăng nhập (Admin): ");
+                    System.out.print("\nTên đăng nhập (Admin): ");
                     admin.adminUser = scanner.nextLine();
                     System.out.print("Mật khẩu (Admin): ");
                     admin.adminPassword = scanner.nextLine();
@@ -345,14 +347,14 @@ public class Main {
                         admin.adminPassword = scanner.nextLine();
                     }
 
-                    user.printNumOfUser();
+                    System.out.printf("\nHiện đang có %d người đăng ký vào hệ thống.\n", numOfUser);
                 }
 
                 case 4 -> {
                     System.out.println("\nCảm ơn quý khách đã sử dụng dịch vụ!");
                 }
             }
-        } while (select != 3);
+        } while (select != 4);
 
         scanner.close();
     }
