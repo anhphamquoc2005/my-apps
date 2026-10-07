@@ -1,5 +1,6 @@
-import Account.Admin;
-import Account.User;
+import Account.Account;
+import Cinema.Movie;
+import Cinema.Cinema;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -7,13 +8,11 @@ import java.util.Scanner;
 
 public class Main {
 
-    static Movie[] movies = new Movie[3];
-
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
-        Admin admin = new Admin();
-        User user = new User("", "", "", 0, "");
+        Account admin = new Account("admin");
+        Account user = new Account("user");
         String loginUser;
         String loginPass;
         String target;
@@ -25,12 +24,14 @@ public class Main {
         boolean isSenior = false;
         int numOfUser = 0;
         int amountChair;
-        int age = 0;
         int select = 0;
 
-        movies[0] = new Movie("[1] Nghỉ hè sợ nghỉ hưu", 70000, 117);
-        movies[1] = new Movie("[2] Hộ Linh Tráng Sĩ", 70000, 135);
-        movies[2] = new Movie("[3] Harry Potter và Hòn Đá Phù Thủy", 70000);
+        Movie movie1= new Movie("[1] Nghỉ hè sợ nghỉ hưu", 70000, 117);
+        Movie movie2= new Movie("[2] Hộ Linh Tráng Sĩ", 70000, 135);
+        Movie movie3= new Movie("[3] Harry Potter và Hòn Đá Phù Thủy", 70000);
+
+        Movie[] movies = {movie1, movie2, movie3};
+        Cinema cinema = new Cinema("Beta Cinema.Cinema", movies);
 
         do {
 
@@ -154,7 +155,12 @@ public class Main {
                     Thread.sleep(400);
 
                     do {
-                        inSystemUI();
+                        System.out.println("\n========== Lịch chiếu phim " + cinema.nameCinema + " ==========");
+                        cinema.displayInfo();
+                        System.out.println("[4] Tìm kiếm");
+                        System.out.println("[5] Xem thông tin tài khoản");
+                        System.out.println("[6] Thoát");
+                        System.out.print("Chọn: ");
 
                         while (!scanner.hasNextInt()) {
                             System.out.println("Bạn chỉ có thể nhập số để lựa chọn.");
@@ -316,9 +322,9 @@ public class Main {
                                         continue;
                                     }
 
-                                    for (Movie m : movies) {
-                                         if(m != null && m.getTitle().toLowerCase().contains(target.toLowerCase())) {
-                                            m.printInfo();
+                                    for (Movie movie : movies) {
+                                         if(movie != null && movie.getTitle().toLowerCase().contains(target.toLowerCase())) {
+                                            movie.printInfo();
                                         }
                                     }
                                 }
@@ -334,17 +340,17 @@ public class Main {
 
                 case 3 -> {
                     System.out.print("\nTên đăng nhập (Admin): ");
-                    admin.adminUser = scanner.nextLine();
+                    admin.username = scanner.nextLine();
                     System.out.print("Mật khẩu (Admin): ");
-                    admin.adminPassword = scanner.nextLine();
+                    admin.password = scanner.nextLine();
 
-                    while (!admin.adminUser.contains("admin") || !admin.adminPassword.contains("admin")) {
+                    while (!admin.username.contains("admin") || !admin.password.contains("admin")) {
                         System.out.println("\nTên đăng nhập hoặc mật khẩu không đúng!\n");
 
                         System.out.print("Tên đăng nhập (Admin): ");
-                        admin.adminUser = scanner.nextLine();
+                        admin.username = scanner.nextLine();
                         System.out.print("Mật khẩu (Admin): ");
-                        admin.adminPassword = scanner.nextLine();
+                        admin.password = scanner.nextLine();
                     }
 
                     System.out.printf("\nHiện đang có %d người đăng ký vào hệ thống.\n", numOfUser);
@@ -360,7 +366,7 @@ public class Main {
     }
 
     public static void inMenu() {
-        System.out.println("\n=== Đặt vé xem Beta Cinema ===");
+        System.out.println("\n=== Đặt vé xem Beta Cinema.Cinema ===");
         System.out.println("1. Đăng ký tài khoản");
         System.out.println("2. Đăng nhập");
         System.out.println("3. Đăng nhập với quyền Admin");
@@ -368,14 +374,7 @@ public class Main {
     }
 
     public static void inSystemUI() {
-        System.out.println("\n========== Lịch chiếu phim ==========");
-        for (Movie m : movies) {
-            m.printInfo();
-        }
-        System.out.println("[4] Tìm kiếm");
-        System.out.println("[5] Xem thông tin tài khoản");
-        System.out.println("[6] Thoát");
-        System.out.print("Chọn: ");
+
     }
 
     public static void inCinemaMap() {

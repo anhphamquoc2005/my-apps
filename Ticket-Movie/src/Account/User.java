@@ -1,12 +1,10 @@
 package Account;
 
-public class User extends Account{
+public class User{
 
-    public User(String username, String password, String fullName, int age, String phoneNumber) {
-        super(username, password, fullName, age, phoneNumber);
-    }
+    String typeAccount;
 
-    public void printInfo() {
-        System.out.printf("\n%s | %s | %s | %d | %s\n", username, password, fullName, age, phoneNumber);
+    public User(String typeAccount) {
+        this.typeAccount = typeAccount;
     }
 }
