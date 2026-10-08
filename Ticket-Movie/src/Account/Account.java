@@ -21,9 +21,9 @@ public class Account {
         this.user = new User(typeAccount);
     }
 
-    public Account(String username, String password, Admin admin, String typeAccount) {
-        this.username =  "admin";
-        this.password = "admin";
+    public Account(String username, String password, String typeAccount) {
+        this.username =  username;
+        this.password = password;
         this.admin = new Admin(typeAccount);
     }
 
